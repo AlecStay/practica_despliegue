@@ -98,7 +98,6 @@ app.delete('/users/:id', (req, res) => {
 app.get('/users/:id', (req, res) => {
     const users = readDatabase();
     const userId = req.params.id;
-    const updatedUser = req.body;
 
     const userIndex = users.findIndex((user) => user.id === userId);
 
@@ -106,12 +105,16 @@ app.get('/users/:id', (req, res) => {
         return res.status(404).json({ error: 'User not found' });
     }
 
-    const user = users[userIndex]
+    const user = users[userIndex];
 
     res.json({ user });
 });
 
-// Iniciar el servidor
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Servidor corriendo en http://0.0.0.0:${PORT}`);
-});
+// Iniciar el servidor solo si el archivo se ejecuta directamente
+if (require.main === module) {
+    app.listen(PORT, '0.0.0.0', () => {
+        console.log(`Servidor corriendo en http://0.0.0.0:${PORT}`);
+    });
+}
+
+module.exports = app;
